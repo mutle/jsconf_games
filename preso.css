@@ -1,0 +1,63 @@
+html {
+  font-family: Helvetica, sans-serif;
+}
+
+#slides {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+}
+
+.slide {
+  position: relative;
+  margin: 50px auto;
+  width: 90%;
+  height: 90%;
+  border: 1px solid black;
+}
+
+.text {
+  font-size: 4em;
+  text-align: center;
+  margin-top: 2em;
+}
+
+h1 {
+  padding-left: 1em;
+  font-size: 1.5em;
+  text-align: left;
+}
+
+.author {
+  position: absolute;
+  bottom: 0; left: 0;
+  padding: 1em;
+}
+
+.small {
+  font-size: 0.75em;
+}
+
+iframe {
+  width: 100%;
+  height: 400px;
+}
+
+.index {
+  position: absolute;
+  bottom: 0; right: 0;
+  padding: 1em;
+}
+
+#screen {
+  text-align: center;
+}
+
+#screen_side {
+  float: left;
+  padding-left: 30px;
+}
+
+.box {
+  position: absolute;
+  border: 2px solid red;
+}

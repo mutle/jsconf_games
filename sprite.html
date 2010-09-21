@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="preso.css" /> 
+    <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+  </head>
+  <body style='padding: 0px; margin: 0px;'>
+    <img class='guybrush' src='images/guybrush.gif' style="width: 294px; height: 951px; float: left;" />
+    <div id="screen_side">
+      <input type="checkbox" class="animate" /> Animate<br />
+      <canvas width="400" height="400"></canvas>
+    </div>
+    <script type="text/javascript">
+      var frames = [
+        [[47,  5],   [73,  51]],
+        [[101, 116], [124, 163]],
+        [[128, 116], [152, 163]],
+        [[160, 116], [191, 163]],
+        [[201, 116], [218, 163]],
+        [[232, 116], [252, 163]],
+        [[260, 116], [294, 163]],
+      ];
+      var animate = false;
+
+      $(window).load(function() {
+        var canvas = $("#screen_side canvas").get(0), context =
+canvas.getContext("2d"), i, frame, box, image =
+$("img.guybrush").get(0);
+        var current_frame = 0;
+
+        function update_canvas() {
+          var curbox = frames[current_frame];
+          context.fillStyle = "#fff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          
+          var sx = curbox[0][0], sy = curbox[0][1], sw = curbox[1][0] - curbox[0][0], sh = curbox[1][1] - curbox[0][1];
+          context.drawImage(image, sx, sy, sw, sh, (canvas.width
+/ 2) - (sw * 4), 0, sw * 8, sh * 8);
+        }
+          
+        for(i = 0; i < frames.length; i++) {
+          frame = frames[i];
+          box = $("<div class='box' />");
+          // alert('box '+i);
+          box.css({'left': frame[0][0] - 2, 'top': frame[0][1] -
+2,
+'width': frame[1][0] - frame[0][0] + 2, 'height': frame[1][1] -
+frame[0][1] + 2}); 
+
+          (function(frame) {
+            box.click(function() {
+              animate = false; $(".animate").attr('checked',
+false);
+              current_frame = frame;
+              update_canvas();
+            });
+          })(i);
+          
+          $("body").append(box);
+        }
+
+        $(".animate").click(function() {
+          animate = !animate;
+        });
+
+        window.setInterval(function() {
+          if(animate) {
+            current_frame++;
+            if(current_frame >= frames.length) current_frame = 1;
+            update_canvas();
+          }
+        }, 100);
+
+        update_canvas();
+
+      });
+    </script>
+  </body>
+</html>

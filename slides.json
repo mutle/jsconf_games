@@ -1,0 +1,32 @@
+{
+  "presentation": {
+    "title": "Using canvas to develop classic 2D games",
+    "author": "Mutwin Kraus"
+  },
+  "slides": [
+    "Hi!",
+    "How to develop games with canvas",
+    "Me",
+    "Mutwin Kraus",
+    "Twitter: @mutle",
+    "Github: http://github.com/mutle",
+    "First contact with Open Source:",
+    {"title": "ScummVM", "iframe":"http://scummvm.org", "text":"<span class='small'>http://scummvm.org/</span>"},
+    "Almost 10 years ago",
+    {"title": "Now: ScummVM running in pure JavaScript", "iframe": "http://test.local"},
+    "Why?",
+    "To see if the browser is a valid game development platform",
+    "Answer: Yes*<br /><br /><span class='small'>* with some limitations</span>",
+    "Ok, then let's build a game",
+    {"title": "Start with a blank &lt;canvas&gt;", "iframe": "canvas_0.html"},
+    {"title": "Add a background image", "iframe": "canvas_1.html"},
+    {"title": "Add a sprite", "iframe": "canvas_2.html"},
+    {"title": "Animate the sprite", "iframe": "canvas_2.html#animate"},
+    "<img src='images/no_mask_fail.png' />",
+    {"title": "Solution: Mask", "iframe": "canvas_3.html"},
+    {"title": "With Mask", "iframe": "canvas_4.html"},
+    {"title": "Handle Input", "iframe": "canvas_5.html"},
+    "...",
+    {"title": "How sprites work", "iframe": "sprite.html"}
+  ]
+}
