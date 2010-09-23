@@ -2,8 +2,6 @@
 
   var presentation = {}, slides = [], current_slide = 0;
 
-  var log = window.console.log;
-
   function build_slide(id) {
     var slide, content, slide_info;
     $("#slides").empty();
@@ -20,12 +18,18 @@
       if(slide_info.replace) {
         content.append("<div class='text'>"+slide_info+"</div>");
       } else {
-        content.append("<div class='text'>"+slide_info.title+"</div>");
+        if(slide_info.title) {
+          content.append("<div class='title'>"+slide_info.title+"</div>");
+        }
         if(slide_info.iframe) {
-          content.append("<iframe scrolling='no' frameborder='0' src='"+slide_info.iframe+"'></iframe>");
+          var extra = (slide_info.iframe_height ? " style='height: "+slide_info.iframe_height+"px;'": "");
+          content.append("<iframe scrolling='no' frameborder='0' src='"+slide_info.iframe+"'"+extra+"></iframe>");
         }
         if(slide_info.text) {
-          content.append("<div class='text'>"+slide_info.text+"</div>");
+          content.append("<div class='extra_text'>"+slide_info.text+"</div>");
+        }
+        if(slide_info.code) {
+          content.append("<div class='code'><pre>"+slide_info.code+"\n</pre></div>");
         }
       }
 

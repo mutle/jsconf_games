@@ -8,6 +8,7 @@
     <div id="screen_side">
       <input type="checkbox" class="animate" /> Animate<br />
       <canvas width="400" height="400"></canvas>
+      <div id="info" style="font-size: 1.8em;"></div>
     </div>
     <script type="text/javascript">
       var frames = [
@@ -25,6 +26,7 @@
         var canvas = $("#screen_side canvas").get(0), context =
 canvas.getContext("2d"), i, frame, box, image =
 $("img.guybrush").get(0);
+        var info = $("#info");
         var current_frame = 0;
 
         function update_canvas() {
@@ -35,11 +37,21 @@ $("img.guybrush").get(0);
           var sx = curbox[0][0], sy = curbox[0][1], sw = curbox[1][0] - curbox[0][0], sh = curbox[1][1] - curbox[0][1];
           context.drawImage(image, sx, sy, sw, sh, (canvas.width
 / 2) - (sw * 4), 0, sw * 8, sh * 8);
+          $("#info").html("context.drawImage(image, "+sx+", "+sy+", "+sw+", "+sh+", "+((canvas.width / 2) - (sw * 4))+", 0, "+(sw * 8)+", "+(sh * 8)+");");
+          $(".box").css({"border-color": "#f00"});
+          $(".box_"+current_frame).css({"border-color": "#0f0"});
         }
+
+        function nextFrame() {
+          if(current_frame == 0) return;
+          current_frame++;
+          if(current_frame >= frames.length) current_frame = 1;
+          update_canvas();
+        };
           
         for(i = 0; i < frames.length; i++) {
           frame = frames[i];
-          box = $("<div class='box' />");
+          box = $("<div class='box box_"+i+"' />");
           // alert('box '+i);
           box.css({'left': frame[0][0] - 2, 'top': frame[0][1] -
 2,
@@ -64,11 +76,15 @@ false);
 
         window.setInterval(function() {
           if(animate) {
-            current_frame++;
-            if(current_frame >= frames.length) current_frame = 1;
-            update_canvas();
+            nextFrame();
           }
         }, 100);
+
+        $(document).keydown(function(e) {
+          if(e.keyCode == 32 || e.keyCode == 39) { // Next slide
+            nextFrame();
+          }
+        });
 
         update_canvas();
 

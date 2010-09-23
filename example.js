@@ -1,7 +1,7 @@
 var global = this;
 
 (function($) {
-  var debug = true; // false;
+  var debug = false;
   var animate = (presentation_step == 2 ? window.location.hash == "#animate" : true) && presentation_step != 5;
 
   function getMilliseconds() {
@@ -39,10 +39,7 @@ var global = this;
           [[262, 116], [293, 163]],
         ];
         this.animations["walk"] = animation;
-        if(animate)
-          this.current_animation = "walk";
-        else
-          this.current_animation = "stand";
+        this.start_animation(animate ? "walk" : "stand");;
         this.scale = 2.0;
         this.pos.x = 500;
         this.pos.y = 250;
@@ -50,17 +47,19 @@ var global = this;
         this.speed = {x: -180, y: 0};
         this.direction = "left";
       });
-      sprite.update(function(delta) {
-        if(this.current_animation != "walk") return;
-        if(this.pos.x < 240) {
-          this.direction = "right";
-          this.speed.x = -this.speed.x;
-        } else if(this.pos.x > 600) {
-          this.direction = "left";
-          this.speed.x = -this.speed.x;
-        }
-        this.pos.x += this.speed.x * delta;
-      });
+      if(presentation_step != 5) {
+        sprite.update(function(delta) {
+          if(this.current_animation != "walk") return;
+          if(this.pos.x < 240) {
+            this.direction = "right";
+            this.speed.x = -this.speed.x;
+          } else if(this.pos.x > 600) {
+            this.direction = "left";
+            this.speed.x = -this.speed.x;
+          }
+          this.pos.x += this.speed.x * delta;
+        });
+      }
       this.add_to_render_list(sprite);
     }
 
@@ -88,6 +87,9 @@ var global = this;
       sprite.add_walk_box(1, [[240, 230], [470, 260]], [2]);
       sprite.add_walk_box(2, [[470, 200], [570, 260]], [1, 3]);
       sprite.add_walk_box(3, [[470, 260], [520, 320]], [3]);
+      this.mouse_event(function(x,y) {
+        sprite.walk_to(x,y);
+      });
     }
 
   };
@@ -97,6 +99,7 @@ var global = this;
     this.canvas = $("#screen canvas").get(0);
     this.context = this.canvas.getContext("2d");
     this.render = [];
+    this.mouse_event_callback = null;
 
     this.add_to_render_list = function(object) {
       this.render.push(object);
@@ -129,9 +132,17 @@ var global = this;
       }
       last_tick = current_tick;
     };
+    this.mouse_event = function(func) {
+      if(func) this.mouse_event_callback = func;
+    };
+
+    // internal
+
     this.mouseEvent = function(e) {
       var x = e.offsetX, y = e.offsetY;
-      window.console.log('mouse down at '+x+'/'+y);
+      if(game.mouse_event_callback) {
+        game.mouse_event_callback(x, y);
+      }
     };
     this.clearContext = function() {
       this.context.fillStyle = "#000";
@@ -197,9 +208,23 @@ var global = this;
     this.current_frame = 0;
     this.frame_counter = 0.0;
     this.scale = 1.0;
-    this.update_callback = (function(delta) {});
     this.walkboxes = {};
     this.walkbox_connections = {};
+
+    this.default_update = function(delta) {
+      if(this.current_animation != "walk") return;
+      var walk_delta = this.speed.x * delta;
+      if(this.target_pos && this.target_pos.x) {
+        var cur_x = this.pos.x, target_x = this.target_pos.x;
+        if(Math.abs(target_x - cur_x) <= Math.abs(walk_delta)) {
+          this.pos.x = target_x;
+          this.start_animation("stand");
+          return;
+        }
+        this.pos.x += walk_delta;
+      }
+    };
+    this.update_callback = this.default_update;
 
     this.render = function(context) {
       var animation = this.animations[this.current_animation], frame, animation_info;
@@ -235,6 +260,11 @@ var global = this;
         }
       }
     };
+    this.start_animation = function(name) {
+      this.current_animation = name;
+      this.current_frame = 0;
+      this.frame_counter = 0.0;
+    };
     this.update = function(func, delta) {
       if(func)
         this.update_callback = func;
@@ -247,6 +277,12 @@ var global = this;
     this.add_walk_box = function(index, box, connections) {
       this.walkboxes[index] = box;
       this.walkbox_connections[index] = connections;
+    };
+    this.walk_to = function(x, y) {
+      this.target_pos = {x: x, y: y};
+      this.start_animation("walk");
+      this.direction = (this.target_pos.x > this.pos.x ? "right" : "left");
+      this.speed.x = (this.direction == "left" ? -180 : 180);
     };
   }
 

@@ -18,7 +18,13 @@ html {
 .text {
   font-size: 4em;
   text-align: center;
-  margin-top: 2em;
+  margin-top: 3em;
+}
+
+.title, .extra_text {
+  font-size: 4em;
+  text-align: center;
+  margin-top: 1em;
 }
 
 h1 {
@@ -60,4 +66,9 @@ iframe {
 .box {
   position: absolute;
   border: 2px solid red;
+}
+
+.code {
+  width: 600px;
+  margin: 0px auto;
 }
