@@ -31,6 +31,9 @@
         if(slide_info.code) {
           content.append("<div class='code'><pre>"+slide_info.code+"\n</pre></div>");
         }
+        if(slide_info.video) {
+          content.append("<div class='video'><video src='"+slide_info.video+"' controls='on' /></div>");
+        }
       }
 
       slide.append(content);

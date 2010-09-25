@@ -2,6 +2,18 @@
   <head>
     <link rel="stylesheet" type="text/css" href="preso.css" /> 
     <script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+    <style>
+      .source {
+        background-color: red;
+        padding: 0.2em;
+      }
+
+      .destination {
+        background-color: black;
+        color: white;
+        padding: 0.2em;
+      }
+    </style>
   </head>
   <body style='padding: 0px; margin: 0px;'>
     <img class='guybrush' src='images/guybrush.gif' style="width: 294px; height: 951px; float: left;" />
@@ -37,7 +49,7 @@ $("img.guybrush").get(0);
           var sx = curbox[0][0], sy = curbox[0][1], sw = curbox[1][0] - curbox[0][0], sh = curbox[1][1] - curbox[0][1];
           context.drawImage(image, sx, sy, sw, sh, (canvas.width
 / 2) - (sw * 4), 0, sw * 8, sh * 8);
-          $("#info").html("context.drawImage(image, "+sx+", "+sy+", "+sw+", "+sh+", "+((canvas.width / 2) - (sw * 4))+", 0, "+(sw * 8)+", "+(sh * 8)+");");
+          $("#info").html("context.drawImage(image, <span class='source'>"+sx+", "+sy+", "+sw+", "+sh+"</span>, <span class='destination'>"+((canvas.width / 2) - (sw * 4))+", 0, "+(sw * 8)+", "+(sh * 8)+"</span>);");
           $(".box").css({"border-color": "#f00"});
           $(".box_"+current_frame).css({"border-color": "#0f0"});
         }
